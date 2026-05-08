@@ -1,0 +1,299 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.svgDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.paper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #f2efe8;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.025) 0.7px, transparent 0.7px),
+    radial-gradient(rgba(255, 255, 255, 0.28) 0.7px, transparent 0.7px);
+  background-size: 18px 18px, 24px 24px;
+  background-position: 0 0, 9px 9px;
+}
+
+/* VIDEO LAYER ===================================================== */
+.videoLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  will-change: transform, opacity;
+  background-color: #f2efe8;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.025) 0.7px, transparent 0.7px),
+    radial-gradient(rgba(255, 255, 255, 0.28) 0.7px, transparent 0.7px);
+  background-size: 18px 18px, 24px 24px;
+  background-position: 0 0, 9px 9px;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  image-rendering: auto;
+}
+
+/* HERO LAYER ===================================================== */
+.heroLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+  background-color: #f2efe8;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.025) 0.7px, transparent 0.7px),
+    radial-gradient(rgba(255, 255, 255, 0.28) 0.7px, transparent 0.7px);
+  background-size: 18px 18px, 24px 24px;
+  background-position: 0 0, 9px 9px;
+  will-change: transform, opacity;
+}
+
+.heroContent {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  position: relative;
+  color: #2a2724;
+  will-change: transform;
+}
+
+/* small ornaments — top kicker */
+.kicker {
+  font-family: var(--font-kalam, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.45em;
+  font-size: 0.72rem;
+  font-weight: 400;
+  margin: 0 0 2.5rem;
+  color: #6a6660;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-style: italic;
+}
+.kickerLine {
+  display: inline-block;
+  width: 38px;
+  height: 1px;
+  background: #6a6660;
+}
+
+/* TITLE — realistic pencil sketch effect */
+.title {
+  font-family: var(--font-caveat, cursive);
+  font-weight: 700;
+  margin: 0 0 1.6rem;
+  color: #1f1d1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.86;
+  /* layered text-shadow simulates graphite weight + smudge */
+  text-shadow:
+    0.5px 0.5px 0 rgba(20, 18, 15, 0.6),
+    -0.5px 0 0 rgba(20, 18, 15, 0.45),
+    0 1px 0 rgba(0, 0, 0, 0.05),
+    1px 2px 1px rgba(0, 0, 0, 0.08);
+  /* SVG turbulence filter gives the text a hand-drawn wobble */
+  filter: url(#pencil-rough);
+}
+
+.titleLine1 {
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  transform: rotate(-1.2deg);
+  display: inline-block;
+  margin-bottom: -0.2em;
+  color: #3a352f;
+}
+.titleLine2 {
+  font-size: clamp(7rem, 18vw, 18rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transform: rotate(0.6deg);
+  display: inline-block;
+  line-height: 1;
+}
+.titleLine3 {
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  transform: rotate(-0.6deg);
+  display: inline-block;
+  margin-top: -0.05em;
+  color: #2a2620;
+}
+.titleAccent {
+  font-style: italic;
+  font-weight: 700;
+  color: #1a1a1a;
+  position: relative;
+  margin-left: 0.15em;
+}
+/* hand-drawn underline scribble under "Boy." */
+.titleAccent::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: 18%;
+  bottom: 0.06em;
+  height: 0.07em;
+  background: #1a1a1a;
+  border-radius: 4px;
+  transform: rotate(-1.2deg) skewX(-3deg);
+  opacity: 0.85;
+  filter: url(#pencil-rough-soft);
+}
+
+.subtitle {
+  font-family: var(--font-kalam, sans-serif);
+  font-style: italic;
+  font-size: clamp(1rem, 1.35vw, 1.3rem);
+  color: #5a564f;
+  margin: 0 0 1.6rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  filter: url(#pencil-rough-soft);
+}
+
+.description {
+  font-family: var(--font-kalam, sans-serif);
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  line-height: 1.75;
+  margin: 0 auto 2.4rem;
+  max-width: 56ch;
+  color: #3d3a35;
+  font-weight: 400;
+}
+
+.ctaRow {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-bottom: 2.4rem;
+  flex-wrap: wrap;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  font-family: var(--font-kalam, sans-serif);
+  font-size: 1rem;
+  padding: 0.85rem 1.9rem;
+  cursor: pointer;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 220ms ease,
+    box-shadow 220ms ease;
+  letter-spacing: 0.02em;
+}
+
+.ctaPrimary {
+  background: #1a1a1a;
+  color: #f2efe8;
+  border: 2px solid #1a1a1a;
+  font-weight: 500;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+.ctaPrimary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.ctaSecondary {
+  background: transparent;
+  color: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  font-weight: 400;
+}
+.ctaSecondary:hover {
+  background: rgba(0, 0, 0, 0.04);
+  transform: translate(-1px, -1px);
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 220ms ease;
+}
+.ctaPrimary:hover .ctaArrow {
+  transform: translateX(4px);
+}
+
+.scrollHint {
+  font-family: var(--font-kalam, sans-serif);
+  font-size: 0.88rem;
+  color: #6a6660;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+.scrollMark {
+  font-family: var(--font-caveat, cursive);
+  font-size: 1.1rem;
+  color: #6a6660;
+}
+.scrollArrow {
+  display: inline-block;
+  animation: bob 2s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 760px) {
+  .heroLayer {
+    padding: 6vh 7vw;
+  }
+  .titleLine1 {
+    font-size: 2.4rem;
+  }
+  .titleLine2 {
+    font-size: 6.5rem;
+  }
+  .titleLine3 {
+    font-size: 2.8rem;
+  }
+  .description {
+    font-size: 1rem;
+  }
+}
