@@ -23,6 +23,7 @@ export default function ScrollVideo({
   const heroRef = useRef<HTMLDivElement | null>(null);
   const heroContentRef = useRef<HTMLDivElement | null>(null);
   const videoLayerRef = useRef<HTMLDivElement | null>(null);
+  const videoFxRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -30,8 +31,10 @@ export default function ScrollVideo({
     const hero = heroRef.current;
     const heroContent = heroContentRef.current;
     const videoLayer = videoLayerRef.current;
+    const videoFx = videoFxRef.current;
     const video = videoRef.current;
-    if (!wrapper || !hero || !heroContent || !videoLayer || !video) return;
+    if (!wrapper || !hero || !heroContent || !videoLayer || !videoFx || !video)
+      return;
 
     let duration = 0;
     let smoothed = 0;
@@ -84,17 +87,26 @@ export default function ScrollVideo({
 
       const t = easeInOutCubic(heroProg);
 
+      // HERO: slides LEFT, with tilt
       hero.style.transform = `translate3d(${-t * 110}%, 0, 0)`;
       hero.style.opacity = `${Math.max(0, 1 - t * 1.05)}`;
-
       const tilt = t * -3;
       const innerShift = t * -8;
       heroContent.style.transform = `translate3d(${innerShift}rem, 0, 0) rotate(${tilt}deg)`;
 
+      // VIDEO LAYER: gentle reveal
       const reveal = easeOutCubic(heroProg);
       videoLayer.style.opacity = `${reveal}`;
       videoLayer.style.transform = `translate3d(${(1 - reveal) * 4}rem, 0, 0)`;
 
+      // VIDEO FX (inner): scrub-driven slow cinematic zoom + tiny rotation drift
+      // CSS handles breathing/floating on the parent layer for constant liveness
+      const zoom = 1 + scrubProg * 0.08;
+      const drift = Math.sin(performance.now() / 2400) * 1.2; // slight px drift
+      const rot = Math.sin(performance.now() / 4000) * 0.4; // ±0.4°
+      videoFx.style.transform = `scale(${zoom}) translate3d(0, ${drift}px, 0) rotate(${rot}deg)`;
+
+      // SCRUB
       if (ready && duration > 0) {
         const target = scrubProg * duration;
         if (!seeking && Math.abs(video.currentTime - target) > 1 / 60) {
@@ -141,7 +153,6 @@ export default function ScrollVideo({
 
   return (
     <section ref={wrapperRef} className={styles.wrapper}>
-      {/* SVG filter for realistic pencil-rough edges on text */}
       <svg className={styles.svgDefs} aria-hidden>
         <defs>
           <filter
@@ -183,18 +194,27 @@ export default function ScrollVideo({
         <div className={styles.paper} aria-hidden />
 
         <div ref={videoLayerRef} className={styles.videoLayer}>
-          <video
-            ref={videoRef}
-            className={styles.video}
-            src={src}
-            muted
-            playsInline
-            preload="auto"
-            disablePictureInPicture
-            disableRemotePlayback
-            tabIndex={-1}
-            aria-hidden
-          />
+          {/* CSS keyframe-driven breathing + drift on this wrapper */}
+          <div className={styles.videoBreath}>
+            {/* JS-driven cinematic scrub zoom on this inner wrapper */}
+            <div ref={videoFxRef} className={styles.videoFx}>
+              <video
+                ref={videoRef}
+                className={styles.video}
+                src={src}
+                muted
+                playsInline
+                preload="auto"
+                disablePictureInPicture
+                disableRemotePlayback
+                tabIndex={-1}
+                aria-hidden
+              />
+              <div className={styles.videoVignette} aria-hidden />
+              <div className={styles.videoGlow} aria-hidden />
+              <div className={styles.videoGrain} aria-hidden />
+            </div>
+          </div>
         </div>
 
         <div ref={heroRef} className={styles.heroLayer}>
